@@ -50,6 +50,19 @@ class User(db.Model):
             first_name=first_name,
             last_name=last_name)
 
+    @classmethod
+    def authenticate(cls, username, password):
+        """ Validate user exists and password is correct
+            Return user instance if valid, else False
+        """
+
+        user = cls.query.filter_by(username=username).one_or_none()
+
+        if user and bcrypt.check_password_hash(user.password, password):
+            return user
+        else:
+            return None #FIXME: ? returning False feels weird vs demo code?
+
 def connect_db(app):
     """Connect to database."""
 
