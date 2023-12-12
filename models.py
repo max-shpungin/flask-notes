@@ -36,6 +36,19 @@ class User(db.Model):
     def __repr__(self):
         return f"User: {self.username} email: {self.email}"
 
+    @classmethod
+    def register(cls, username, password, email, first_name, last_name):
+        """Registers new user with a properly hashed password and return that
+        new user"""
+
+        hash_pwd = bcrypt.generate_password_hash(password).decode('utf8')
+
+        return cls(
+            username=username,
+            password=hash_pwd,
+            email=email,
+            first_name=first_name,
+            last_name=last_name)
 
 def connect_db(app):
     """Connect to database."""
