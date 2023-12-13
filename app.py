@@ -156,7 +156,9 @@ def edit_note(note_id):
     """Update a note and redirect to /users/<username>."""
 
     note = Note.query.get_or_404(note_id)
-    form = EditNoteForm()
+    form = EditNoteForm(obj=note)
+    ## passing note instance from sqlalchemy
+    ## to constructor for EditNoteForm
 
     if form.validate_on_submit():
 

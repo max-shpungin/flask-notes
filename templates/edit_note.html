@@ -9,24 +9,19 @@
 
   {{ form.hidden_tag() }}
 
-  <p>
-    {{ form.title.label }}
-    {{ form.title(value=note.title) }}
+  {% for field in form
+  if field.widget.input_type != 'hidden' %}
+    <p>
+      {{ field.label }}
+      {{ field }}
 
-    {% for error in form.title.errors %}
-      {{ error }}
-    {% endfor %}
-  </p>
-  <p>
-    {{ form.content.label }}
+      {% for error in field.errors %}
+        {{ error }}
+      {% endfor %}
+    </p>
+  {% endfor %}
 
-    {% set form.content.data = note.content %}
-
-    {% for error in form.content.errors %}
-      {{ error }}
-    {% endfor %}
-  </p>
-
+  <button type="submit">update</button>
 
 </form>
 

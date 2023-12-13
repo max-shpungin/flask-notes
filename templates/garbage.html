@@ -1,0 +1,23 @@
+<form method="POST">
+
+  {{ form.hidden_tag() }}
+
+  <p>
+    {{ form.title.label }}
+    {{ form.title(value=note.title) }}
+
+    {% for error in form.title.errors %}
+      {{ error }}
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.content.label }}
+    {{ form.content(value='something') }}
+
+    {% for error in form.content.errors %}
+      {{ error }}
+    {% endfor %}
+  </p>
+
+
+</form>
