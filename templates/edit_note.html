@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %} Update Note {% endblock %}
+
+{% block content %}
+
+<h1>Update Note</h1>
+<form method="POST">
+
+  {{ form.hidden_tag() }}
+
+  <p>
+    {{ form.title.label }}
+    {{ form.title(value=note.title) }}
+
+    {% for error in form.title.errors %}
+      {{ error }}
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.content.label }}
+
+    {% set form.content.data = note.content %}
+
+    {% for error in form.content.errors %}
+      {{ error }}
+    {% endfor %}
+  </p>
+
+
+</form>
+
+
+{% endblock %}

@@ -4,8 +4,13 @@ from flask import Flask, render_template, redirect, session, flash
 from flask_debugtoolbar import DebugToolbarExtension
 
 from models import connect_db, db, User, Note
-from forms import RegisterForm, LoginForm, CSRFProtectForm, AddNoteForm
-
+from forms import (
+    RegisterForm,
+    LoginForm,
+    CSRFProtectForm,
+    AddNoteForm,
+    EditNoteForm
+)
 #this is a key that stores the username in the session
 USERNAME = "username"
 
@@ -148,11 +153,19 @@ def add_new_note(username):
 
 @app.route('/notes/<note_id>/update', methods=["GET", "POST"])
 def edit_note(note_id):
-    """Display form to edit note and edit note when form submitted properly"""
+    """Update a note and redirect to /users/<username>."""
 
+    note = Note.query.get_or_404(note_id)
     form = EditNoteForm()
 
     if form.validate_on_submit():
-        ...
+
+
+        note.title = form.title.data
+        note.content = form.content.data
+
+        db.session.commit()
+
+        return redirect(f'/users/{note.user.username}')
     else:
-        return render_template("edit_note.html",form=form)
+        return render_template("edit_note.html",form=form, note=note)
