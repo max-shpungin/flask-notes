@@ -3,8 +3,8 @@ import os
 from flask import Flask, render_template, redirect, session, flash
 from flask_debugtoolbar import DebugToolbarExtension
 
-from models import connect_db, db, User
-from forms import RegisterForm, LoginForm, CSRFProtectForm
+from models import connect_db, db, User, Note
+from forms import RegisterForm, LoginForm, CSRFProtectForm, AddNoteForm
 
 #this is a key that stores the username in the session
 USERNAME = "username"
@@ -122,3 +122,37 @@ def delete_user(username):
 
 ####################################################
 # NOTES ROUTES
+
+@app.route('/users/<username>/notes/add', methods=["GET", "POST"])
+def add_new_note(username):
+    """Display form to add note and add note to database when filled in"""
+
+    form = AddNoteForm()
+
+    if form.validate_on_submit():
+        title = form.title.data
+        content = form.content.data
+
+        new_note = Note(
+            title=title,
+            content=content,
+            owner_username=username
+        )
+
+        db.session.add(new_note)
+        db.session.commit()
+
+        return redirect(f"/users/{username}")
+    else:
+        return render_template("add_note.html",form=form)
+
+@app.route('/notes/<note_id>/update', methods=["GET", "POST"])
+def edit_note(note_id):
+    """Display form to edit note and edit note when form submitted properly"""
+
+    form = EditNoteForm()
+
+    if form.validate_on_submit():
+        ...
+    else:
+        return render_template("edit_note.html",form=form)
