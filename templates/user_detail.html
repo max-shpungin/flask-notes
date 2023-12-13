@@ -33,7 +33,9 @@
         <div>
           <p>{{ note.title }}</p>
           <p>{{ note.content }}</p>
-          <a class="btn btn-primary" href="/notes/{{ note.id }}/update"></a>
+          <a class="btn btn-primary" href="/notes/{{ note.id }}/update">
+            Edit Note
+          </a>
         </div>
       </li>
     {% endfor %}
@@ -43,6 +45,10 @@
   {{ form.hidden_tag() }}
   <button type="submit">Logout</button>
 </form>
+
+<a class="btn btn-primary" href="/users/{{user.username}}/notes/add">
+  Add Note
+</a>
 
 <form method="POST" action="/users/{{ user.username }}/delete">
   {{ form.hidden_tag() }}
