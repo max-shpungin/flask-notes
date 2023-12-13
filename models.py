@@ -41,6 +41,8 @@ class User(db.Model):
         """Registers new user with a properly hashed password and return that
         new user"""
 
+        #could add to the session here
+
         hash_pwd = bcrypt.generate_password_hash(password).decode('utf8')
 
         return cls(
@@ -48,7 +50,8 @@ class User(db.Model):
             password=hash_pwd,
             email=email,
             first_name=first_name,
-            last_name=last_name)
+            last_name=last_name,
+        )
 
     @classmethod
     def authenticate(cls, username, password):
@@ -61,7 +64,7 @@ class User(db.Model):
         if user and bcrypt.check_password_hash(user.password, password):
             return user
         else:
-            return None #FIXME: ? returning False feels weird vs demo code?
+            return False #FIXME: ? returning False feels weird vs demo code?
 
 def connect_db(app):
     """Connect to database."""
