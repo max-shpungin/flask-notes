@@ -20,6 +20,8 @@ connect_db(app)
 
 toolbar = DebugToolbarExtension(app)
 
+###########################################################
+# USER ROUTES
 
 @app.get("/")
 def redirect_to_register():
@@ -99,4 +101,24 @@ def logout():
 
     if form.validate_on_submit():
         session.pop(USERNAME, None)
-    return redirect("/login")
+    return redirect("/") ## redirect f(x) makes a response, MUST return
+
+@app.post('/users/<username>/delete')
+def delete_user(username):
+    """
+        Remove the user from the database.
+        Log the user out and redirect to /.
+    """
+    form = CSRFProtectForm()
+
+    if form.validate_on_submit():
+        user_to_delete = User.query.get_or_404(username)
+
+        db.session.delete(user_to_delete)
+        db.session.commit()
+
+    return logout() #feels weird to repeat the code, trying this?
+
+
+####################################################
+# NOTES ROUTES

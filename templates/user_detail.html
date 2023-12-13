@@ -24,9 +24,29 @@
 
 </ul>
 
+<h2>Notes</h2>
+
+  <ul>
+
+    {% for note in user.notes %}
+      <li>
+        <div>
+          <p>{{ note.title }}</p>
+          <p>{{ note.content }}</p>
+          <a class="btn btn-primary" href="/notes/{{ note.id }}/update"></a>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+
 <form method="POST" action="/logout">
   {{ form.hidden_tag() }}
   <button type="submit">Logout</button>
+</form>
+
+<form method="POST" action="/users/{{ user.username }}/delete">
+  {{ form.hidden_tag() }}
+  <button type="submit">delete</button>
 </form>
 
 {% endblock %}
